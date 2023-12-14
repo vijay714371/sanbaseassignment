@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+</head>
+<body>
+    <h1>User Login</h1>
+
+    <form id="loginForm">
+        <label for="login_id">Email:</label>
+        <input type="text" id="login_id" name="login_id" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="button" onclick="authenticateUser()">Login</button>
+    </form>
+
+    <script>
+        function authenticateUser() {
+            const loginId = document.getElementById('login_id').value;
+            const password = document.getElementById('password').value;
+               console.log(loginId)
+            fetch('https://localhost:8291/auth/generateToken', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: "vijay@gmail.com",
+                    password: "123"
+                    
+                })
+            })
+            .then(response => {
+				
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Assuming the API returns a token
+                const bearerToken = data.token;
+
+                // Store the token securely, e.g., in a session or local storage
+                // For simplicity, we'll log it to the console
+                console.log('Bearer Token:', bearerToken);
+
+                // Redirect to another page or perform additional actions as needed
+                console.log('Redirecting to another page...');
+            })
+            .catch(error => {
+                console.error('Error during authentication:', error.message);
+                // Handle authentication error, e.g., display an error message
+            });
+        }
+    </script>
+</body>
+</html>

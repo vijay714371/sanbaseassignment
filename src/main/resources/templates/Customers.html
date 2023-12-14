@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Details</title>
+</head>
+<body>
+    <h1>Customer Details</h1>
+
+    <div id="customerDetails">
+        <!-- Customer details will be displayed here -->
+    </div>
+
+    <button onclick="goToCustomerList()">Back to Customer List</button>
+
+    <script>
+        // Replace 'YOUR_BEARER_TOKEN' with the actual Bearer token received during authentication
+        const bearerToken = 'YOUR_BEARER_TOKEN';
+
+        // Replace 'CUSTOMER_UUID' with the actual UUID of the customer you want to display
+        const customerUUID = 'CUSTOMER_UUID';
+
+        document.addEventListener('DOMContentLoaded', getCustomerDetails);
+
+        function getCustomerDetails() {
+            fetch(`https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp?cmd=get_customer&uuid=${customerUUID}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${bearerToken}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Display customer details on the page
+                const customerDetailsContainer = document.getElementById('customerDetails');
+                customerDetailsContainer.innerHTML = `
+                    <p><strong>First Name:</strong> ${data.first_name}</p>
+                    <p><strong>Last Name:</strong> ${data.last_name}</p>
+                    <p><strong>Email:</strong> ${data.email}</p>
+                    <p><strong>Street:</strong> ${data.street}</p>
+                    <p><strong>Address:</strong> ${data.address}</p>
+                    <p><strong>City:</strong> ${data.city}</p>
+                    <p><strong>State:</strong> ${data.state}</p>
+                    <p><strong>Phone:</strong> ${data.phone}</p>
+                `;
+            })
+            .catch(error => {
+                console.error('Error fetching customer details:', error.message);
+            });
+        }
+
+        function goToCustomerList() {
+            // Redirect to the customer list page or implement your navigation logic
+            console.log('Redirecting to Customer List page');
+        }
+    </script>
+</body>
+</html>
+
+	
+	
